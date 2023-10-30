@@ -1,0 +1,108 @@
+# encoding: utf-8
+# 2022 R1
+SetScriptVersion(Version="22.1.217")
+Mechanical.CreateMechanicalModelSystemAndOpen()
+system1 = GetSystem(Name="Mechanical Model")
+engineeringData1 = system1.GetContainer(ComponentName="Engineering Data")
+matl1 = engineeringData1.CreateMaterial(Name="Aluminium 6061")
+matlProp1 = matl1.CreateProperty(
+    Name="Density",
+    Qualifiers={"Definition": "", "Behavior": ""})
+matlProp1.SetVariableProperty(
+    VariableName="Density",
+    Property="Unit",
+    Value="lb in^-3")
+matlProp1.SetData(
+    Index=-1,
+    Variables=["Density"],
+    Values=[["0.0975 [lb in^-3]"]])
+matlProp2 = matl1.CreateProperty(
+    Name="Viscosity",
+    Qualifiers={"Definition": "", "Behavior": ""})
+matlProp2.Delete()
+matlProp3 = matl1.CreateProperty(
+    Name="Tensile Yield Strength",
+    Qualifiers={"Definition": "", "Behavior": ""})
+matlProp3.SetVariableProperty(
+    VariableName="Tensile Yield Strength",
+    Property="Unit",
+    Value="psi")
+matlProp3.SetData(
+    Index=-1,
+    Variables=["Tensile Yield Strength"],
+    Values=[["40000 [psi]"]])
+matlProp4 = matl1.CreateProperty(
+    Name="Tensile Ultimate Strength",
+    Qualifiers={"Definition": "", "Behavior": ""})
+matlProp4.SetVariableProperty(
+    VariableName="Tensile Ultimate Strength",
+    Property="Unit",
+    Value="psi")
+matlProp4.SetData(
+    Index=-1,
+    Variables=["Tensile Ultimate Strength"],
+    Values=[["45000 [psi]"]])
+matlProp5 = matl1.CreateProperty(
+    Name="Compressive Yield Strength",
+    Qualifiers={"Definition": "", "Behavior": ""})
+matlProp5.Delete()
+matlProp6 = matl1.CreateProperty(
+    Name="Melting Temperature",
+    Qualifiers={"Definition": "", "Behavior": ""})
+matlProp6.SetVariableProperty(
+    VariableName="Melting Temperature",
+    Property="Unit",
+    Value="F")
+matlProp6.SetData(
+    Index=-1,
+    Variables=["Melting Temperature"],
+    Values=[["1205 [F]"]])
+matlProp7 = matl1.CreateProperty(
+    Name="Elasticity",
+    Behavior="Isotropic",
+    Qualifiers={"Definition": "", "Behavior": "Isotropic"})
+matlProp7.SetQualifier(
+    Qualifier="Derive from",
+    Value="Shear Modulus and Poisson's Ratio")
+matlProp7.SetData(
+    Index=-1,
+    Variables=["Poisson's Ratio"],
+    Values=[["0.33"]])
+matlProp7.SetVariableProperty(
+    VariableName="Shear Modulus",
+    Property="Unit",
+    Value="GPa")
+matlProp7.SetData(
+    Variables=["Shear Modulus"],
+    Values=[["7.8886090522101181E-31 [GPa]"]])
+matlProp7.SetData(
+    Variables=["Shear Modulus"],
+    Values=[["26 [GPa]"]])
+matlProp8 = matl1.CreateProperty(
+    Name="Elasticity",
+    Behavior="Orthotropic",
+    Qualifiers={"Definition": "", "Behavior": "Orthotropic"})
+matlProp8.Delete(Behavior="Orthotropic")
+matlProp8.Delete(Behavior="Isotropic")
+matlProp9 = matl1.CreateProperty(
+    Name="Elasticity",
+    Behavior="Isotropic",
+    Qualifiers={"Definition": "", "Behavior": "Isotropic"})
+matlProp9.SetQualifier(
+    Qualifier="Derive from",
+    Value="Shear Modulus and Poisson's Ratio")
+matlProp9.SetData(
+    Index=-1,
+    Variables=["Poisson's Ratio"],
+    Values=[["0.33"]])
+matlProp9.SetVariableProperty(
+    VariableName="Shear Modulus",
+    Property="Unit",
+    Value="GPa")
+matlProp9.SetData(
+    Variables=["Shear Modulus"],
+    Values=[["7.8886090522101181E-31 [GPa]"]])
+matlProp9.SetData(
+    Variables=["Shear Modulus"],
+    Values=[["26 [GPa]"]])
+Save(Overwrite=True)
