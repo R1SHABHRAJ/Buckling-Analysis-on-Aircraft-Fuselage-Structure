@@ -1,0 +1,151 @@
+# encoding: utf-8
+# 2022 R1
+SetScriptVersion(Version="22.1.217")
+Mechanical.CreateMechanicalModelSystemAndOpen()
+template1 = GetTemplate(
+    TemplateName="Static Structural",
+    Solver="ANSYS")
+system1 = template1.CreateSystem()
+geometry1 = system1.GetContainer(ComponentName="Geometry")
+geometry1.Edit(IsSpaceClaimGeometry=True)
+geometry1.Exit()
+geometry1.SetFile(FilePath="C:/Users/91998/OneDrive/Desktop/Chinmay/Final_Assembly Fuselage A.stp")
+modelComponent1 = system1.GetComponent(Name="Model")
+modelComponent1.Refresh()
+setupComponent1 = system1.GetComponent(Name="Setup")
+setupComponent1.Refresh()
+setup1 = system1.GetContainer(ComponentName="Setup")
+setup1.Edit()
+geometry1.Edit(IsSpaceClaimGeometry=True)
+geometry1.Exit()
+geometry1.SetFile(FilePath="C:/Users/91998/OneDrive/Desktop/Part1_1.stp")
+modelComponent1.Refresh()
+setupComponent1.Refresh()
+setup1.Edit()
+geometry1.SetFile(FilePath="C:/Users/91998/OneDrive/Desktop/Part1 02.1.stp")
+modelComponent1.Refresh()
+setupComponent1.Refresh()
+setup1.Edit()
+geometry1.SetFile(FilePath="E:/Part005_1.stp")
+modelComponent1.Refresh()
+setupComponent1.Refresh()
+setup1.Edit()
+engineeringData1 = system1.GetContainer(ComponentName="Engineering Data")
+matl1 = engineeringData1.CreateMaterial(Name="al 6061 t6")
+matlProp1 = matl1.CreateProperty(
+    Name="Density",
+    Qualifiers={"Definition": "", "Behavior": ""})
+matlProp2 = matl1.CreateProperty(
+    Name="Melting Temperature",
+    Qualifiers={"Definition": "", "Behavior": ""})
+matlProp3 = matl1.CreateProperty(
+    Name="Elasticity",
+    Behavior="Isotropic",
+    Qualifiers={"Definition": "", "Behavior": "Isotropic"})
+matlProp4 = matl1.CreateProperty(
+    Name="Tensile Yield Strength",
+    Qualifiers={"Definition": "", "Behavior": ""})
+matlProp5 = matl1.CreateProperty(
+    Name="Compressive Yield Strength",
+    Qualifiers={"Definition": "", "Behavior": ""})
+matlProp6 = matl1.CreateProperty(
+    Name="Tensile Ultimate Strength",
+    Qualifiers={"Definition": "", "Behavior": ""})
+matlProp1.SetVariableProperty(
+    VariableName="Density",
+    Property="Unit",
+    Value="lb in^-3")
+matlProp1.SetData(
+    Index=-1,
+    Variables=["Density"],
+    Values=[["0.0975 [lb in^-3]"]])
+matlProp2.SetData(
+    Index=-1,
+    Variables=["Melting Temperature"],
+    Values=[["652 [C]"]])
+matlProp3.SetQualifier(
+    Qualifier="Derive from",
+    Value="Shear Modulus and Poisson's Ratio")
+matlProp3.SetData(
+    Index=-1,
+    Variables=["Poisson's Ratio"],
+    Values=[["0.33"]])
+matlProp3.SetVariableProperty(
+    VariableName="Shear Modulus",
+    Property="Unit",
+    Value="GPa")
+matlProp3.SetData(
+    Variables=["Shear Modulus"],
+    Values=[["7.8886090522101181E-31 [GPa]"]])
+matlProp3.SetData(
+    Variables=["Shear Modulus"],
+    Values=[["26 [GPa]"]])
+matlProp4.SetVariableProperty(
+    VariableName="Tensile Yield Strength",
+    Property="Unit",
+    Value="MPa")
+matlProp4.SetData(
+    Index=-1,
+    Variables=["Tensile Yield Strength"],
+    Values=[["276 [MPa]"]])
+matlProp6.SetVariableProperty(
+    VariableName="Tensile Ultimate Strength",
+    Property="Unit",
+    Value="MPa")
+matlProp6.SetData(
+    Index=-1,
+    Variables=["Tensile Ultimate Strength"],
+    Values=[["310 [MPa]"]])
+matlProp5.Delete()
+material1 = engineeringData1.GetMaterial(Name="Structural Steel")
+material1.Delete()
+Save(Overwrite=True)
+material2 = engineeringData1.GetMaterial(Name="Aluminum Alloy")
+material2.Delete()
+matl1.Delete()
+setup1.Edit()
+template2 = GetTemplate(
+    TemplateName="Linear Buckling",
+    Solver="ANSYS")
+system2 = template2.CreateSystem()
+system2.Move(
+    Position="Right",
+    RelativeTo=system1)
+solutionComponent1 = system1.GetComponent(Name="Solution")
+modelComponent2 = system2.GetComponent(Name="Model")
+solutionComponent1.TransferData(TargetComponent=modelComponent2)
+modelComponent2.Refresh()
+modelComponent2.Refresh()
+modelComponent2.Refresh()
+system2.Update(AllDependencies=True)
+modelComponent1.TransferData(TargetComponent=modelComponent2)
+solutionComponent1.DeleteTransfer(TargetComponent=modelComponent2)
+modelComponent2.Refresh()
+Update()
+solutionComponent1.TransferData(TargetComponent=modelComponent2)
+system2.Update(AllDependencies=True)
+solutionComponent1.DeleteTransfer(TargetComponent=modelComponent2)
+system2.Update(AllDependencies=True)
+engineeringDataComponent1 = system1.GetComponent(Name="Engineering Data")
+geometryComponent1 = system1.GetComponent(Name="Geometry")
+system3 = template2.CreateSystem(
+    Name="",
+    ComponentsToShare=[engineeringDataComponent1, geometryComponent1, modelComponent1],
+    Position="Right",
+    RelativeTo=system1)
+system2.Delete()
+setupComponent2 = system3.GetComponent(Name="Setup")
+solutionComponent1.TransferData(TargetComponent=setupComponent2)
+system3.Update(AllDependencies=True)
+system3.Delete()
+system4 = template2.CreateSystem(
+    Name="",
+    ComponentsToShare=[engineeringDataComponent1, geometryComponent1, modelComponent1],
+    Position="Right",
+    RelativeTo=system1)
+setupComponent3 = system4.GetComponent(Name="Setup")
+solutionComponent1.TransferData(TargetComponent=setupComponent3)
+Save(Overwrite=True)
+model1 = system1.GetContainer(ComponentName="Model")
+model1.Exit()
+Save(Overwrite=True)
